@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Container, CircularProgress, VStack, HStack, Heading, useColorModeValue, Input } from "@chakra-ui/react";
+import { Container, CircularProgress, VStack, Heading, useColorModeValue, Input } from "@chakra-ui/react";
 import { Markup } from "interweave";
 import React from "react";
 import { FETCH_PROBLEM } from "../../util/graphql";

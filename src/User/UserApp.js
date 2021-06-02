@@ -13,7 +13,7 @@ import { Route, useRouteMatch } from 'react-router'
 
 function UserApp() {
 
-  const { path, url } = useRouteMatch();
+  const { path } = useRouteMatch();
 
     return (
       <UserAuthProvider>

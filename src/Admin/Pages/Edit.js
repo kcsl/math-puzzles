@@ -8,7 +8,7 @@ import {
   Text,
   CircularProgress,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@chakra-ui/button";

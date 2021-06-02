@@ -17,7 +17,7 @@ import moment from "moment";
 import { BsTrashFill } from "react-icons/bs";
 import React from "react";
 import { DELETE_PROBLEM, GET_PROBLEMS } from "../../util/graphql";
-import { EditIcon } from "@chakra-ui/icons";
+// import { EditIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 //TODO finalize  update

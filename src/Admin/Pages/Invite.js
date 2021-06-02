@@ -24,7 +24,7 @@ function Invite(props) {
 
   const [errors, setErrors] = useState({});
 
-  const [loginUser, { loading }] = useMutation(REGISTER_ADMIN, {
+  const [loginUser] = useMutation(REGISTER_ADMIN, {
     update(_, { data: { userRegister: userData } }) {
       window.location = "/admin/administrator";
       console.log(userData)

@@ -7,6 +7,8 @@ import {
   useColorModeValue,
   FormControl,
   FormErrorMessage,
+  Container,
+  CircularProgress,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 
@@ -16,18 +18,18 @@ import { REGISTER_USER } from "../../util/graphql";
 function Register(props) {
   const formBackground = useColorModeValue("gray.100", "gray.700");
   const context = useContext(UserAuthContext);
-  
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("")
-  const [confirmPassword, setconfirmPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
 
   const [errors, setErrors] = useState({});
 
   const [loginUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { userRegister: userData } }) {
-      context.login(userData)
-      window.location = "/user"
+      context.login(userData);
+      window.location = "/user";
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -36,11 +38,15 @@ function Register(props) {
       username,
       password,
       email,
-      confirmPassword
+      confirmPassword,
     },
   });
 
-  return (
+  return loading ? (
+    <Container centerContent maxW="container.xl">
+      <CircularProgress isIndeterminate color="teal" />
+    </Container>
+  ) : (
     <Flex alignItems="center" justifyContent="center">
       <Flex direction="column" background={formBackground} p={12} rounded={6}>
         <Heading mb={6}>Register</Heading>

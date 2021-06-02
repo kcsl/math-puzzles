@@ -1,7 +1,5 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
-  Icon,
-  IconButton,
   Link,
   Td,
   Tr,
@@ -15,8 +13,6 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FETCH_ADMINS } from "../../util/graphql";
-import { Link as ReactRouterLink } from "react-router-dom";
-
 
 
 function Admin() {

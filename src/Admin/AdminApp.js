@@ -8,7 +8,7 @@ import {
 import NavBar from "./Components/NavBar";
 import Add from "./Pages/Add";
 import Admin from "./Pages/Admin";
-import Edit from "./Pages/Edit";
+// import Edit from "./Pages/Edit";
 import Home from "./Pages/Home";
 import Invite from "./Pages/Invite";
 import Login from "./Pages/Login";
