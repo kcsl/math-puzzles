@@ -30,7 +30,6 @@ function SinglePart({ match }) {
 
   if (!loading) {
     problem = data?.getCompletedProblem;
-    console.log(problem);
   }
 
   return (

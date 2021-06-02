@@ -1,12 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { Input } from "@chakra-ui/input";
-import { Container, Heading, HStack, Stack, Text } from "@chakra-ui/layout";
+import { Center, Container, Heading, HStack, Stack, Text } from "@chakra-ui/layout";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import { ADD_PROBLEM } from "../../util/graphql";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@chakra-ui/button";
 import { AddIcon, CheckIcon } from "@chakra-ui/icons";
+import { formats, modules } from "../../util/quill";
 
 function Add() {
   const [title, setTitle] = useState("");
@@ -75,12 +76,18 @@ function Add() {
       </Container>
       {parts.map((part, index) => (
         <Container maxW="container.xl" key={index} mb={8}>
-          <Heading size="lg" mb={6}>{`Part ${index + 1}`}</Heading>
+          <Center>
+            <Heading size="lg" mb={6} centerContent>{`Part ${
+              index + 1
+            }`}</Heading>
+          </Center>
           <Text mb={2}>Question</Text>
           <ReactQuill
             theme="snow"
             value={parts[index].question}
             onChange={(value) => onChangeQuestion(value, index)}
+            modules={modules}
+            formats={formats}
           />
           <Text mb={2} mt={6}>
             Answer
@@ -92,7 +99,7 @@ function Add() {
           />
         </Container>
       ))}
-      <HStack spacing={3} align="center">
+      <HStack spacing={3} align="center" pb={6}>
         <Button leftIcon={<AddIcon />} onClick={addPart}>
           Add
         </Button>

@@ -164,3 +164,40 @@ export const REGISTER_ADMIN = gql`
     }
   }
 `;
+
+export const FETCH_PROBLEM = gql`
+  query getProblem($problemID: ID!) {
+    getProblem(problemID: $problemID) {
+      id
+      title
+      topic
+      parts {
+        question
+        answer
+        index
+      }
+    }
+  }
+`;
+
+export const UPDATE_PROBLEM = gql`
+  mutation update(
+    $title: String!
+    $topic: String!
+    $parts: [PartInput]!
+    $problemID: ID!
+  ) {
+    updateProblem(problemID: $problemID, problem: {
+      title: $title
+      topic: $topic
+      parts: $parts
+    }) {
+      title
+      topic
+      sections
+      id
+      createdAt
+      author
+    }
+  }
+`;

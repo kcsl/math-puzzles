@@ -12,6 +12,7 @@ import Edit from "./Pages/Edit";
 import Home from "./Pages/Home";
 import Invite from "./Pages/Invite";
 import Login from "./Pages/Login";
+import Problem from "./Pages/Problem";
 
 function AdminApp() {
   return (
@@ -30,10 +31,16 @@ function AdminApp() {
         path="/admin/add"
         redirect="/admin/login"
       />
-      <AdminProtectedRoute
+      {/* <AdminProtectedRoute
         component={Edit}
         exact
         path="/admin/edit/:problemID"
+        redirect="/admin/login"
+      /> */}
+      <AdminProtectedRoute
+        component={Problem}
+        exact
+        path="/admin/problem/:problemID"
         redirect="/admin/login"
       />
       <AdminProtectedRoute

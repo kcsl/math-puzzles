@@ -48,7 +48,7 @@ function Problem({ problem }) {
       <Td>{moment(problem.createdAt).format("MMM Do YYYY")}</Td>
       <Td>
         <IconButton aria-label="delete" icon={<Icon as={BsTrashFill} />} onClick={deleteProblem}/>
-        <IconButton aria-label="update" icon={<EditIcon />} />
+        {/* <IconButton aria-label="update" icon={<EditIcon />} as={ReactRouterLink} to={`/admin/edit/${problem.id}`}/> */}
       </Td>
     </Tr>
   );

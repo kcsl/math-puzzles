@@ -1,7 +1,9 @@
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import ApolloProvider from "./ApolloProvider"
+import katex from "katex";
 import "katex/dist/katex.min.css";
+window.katex = katex;
 
 
 ReactDOM.render(ApolloProvider, document.getElementById("root"));

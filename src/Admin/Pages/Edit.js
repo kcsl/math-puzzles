@@ -1,56 +1,91 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Input } from "@chakra-ui/input";
-import { Container, Heading, HStack, Stack, Text } from "@chakra-ui/layout";
+import {
+  Container,
+  Heading,
+  HStack,
+  Stack,
+  Text,
+  CircularProgress,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@chakra-ui/button";
 import { AddIcon, CheckIcon } from "@chakra-ui/icons";
+import { FETCH_PROBLEM, UPDATE_PROBLEM } from "../../util/graphql";
 
 function Edit({ match }) {
   const { problemID } = match.params;
-  const [title, setTitle] = useState("");
-  const [topic, setTopic] = useState("");
-  const [parts, setParts] = useState([
-    {
-      question: "",
-      answer: "",
-    },
-  ]);
+  let title = "";
+  let topic = "";
+  let parts = [];
 
-  
+  const { loading, data } = useQuery(FETCH_PROBLEM, {
+    variables: { problemID },
+  });
+
+  const [updateProblem] = useMutation(UPDATE_PROBLEM, {
+    update(proxy, result) {
+      console.log(result);
+      //   window.location = "/admin";
+    },
+    variables: {
+      title,
+      topic,
+      parts,
+      problemID,
+    },
+  });
+
+  if (!loading) {
+    title = data.getProblem.title;
+    topic = data.getProblem.topic;
+    parts = JSON.parse(JSON.stringify(data.getProblem.parts));
+  }
 
   function onChangeQuestion(value, index) {
-    let copy = [...parts];
-    copy[index].question = value;
-    setParts(copy);
+    parts[index].questions = value;
+    console.log(title);
   }
 
   function onChangeAnswer(value, index) {
-    let copy = [...parts];
-    copy[index].answer = value;
-    setParts(copy);
+    parts[index].answer = value;
   }
 
   function addPart() {
-    setParts([
+    parts = [
       ...parts,
       {
         question: "",
         answer: "",
       },
-    ]);
+    ];
   }
 
-  return (
+  function onSubmit() {
+    console.log({
+      title,
+      topic,
+      parts,
+    });
+    updateProblem();
+  }
+
+  return loading ? (
+    <Container centerContent maxW="container.xl">
+      <CircularProgress isIndeterminate color="teal" />
+    </Container>
+  ) : (
     <Stack alignItems="center" justifyContent="center" spacing={8}>
-      <Heading>Add New Problem</Heading>
+      <Heading>Update Problem</Heading>
       <Container centerContent>
         <Text mb={2}>Title</Text>
         <Input
           variant="filled"
           placeholder="Title"
-          onChange={(event) => setTitle(event.target.value)}
+          defaultValue={title}
+          onChange={(event) => (title = event.target.value)}
         />
       </Container>
       <Container centerContent>
@@ -58,7 +93,8 @@ function Edit({ match }) {
         <Input
           variant="filled"
           placeholder="Topic"
-          onChange={(event) => setTopic(event.target.value)}
+          defaultValue={topic}
+          onChange={(event) => (topic = event.target.value)}
         />
       </Container>
       {parts.map((part, index) => (
@@ -67,6 +103,7 @@ function Edit({ match }) {
           <Text mb={2}>Question</Text>
           <ReactQuill
             theme="snow"
+            defaultValue={parts[index].question}
             value={parts[index].question}
             onChange={(value) => onChangeQuestion(value, index)}
           />
@@ -76,6 +113,7 @@ function Edit({ match }) {
           <Input
             variant="filled"
             placeholder="Answer"
+            defaultValue={parts[index].answer}
             onChange={(event) => onChangeAnswer(event.target.value, index)}
           />
         </Container>
@@ -84,7 +122,7 @@ function Edit({ match }) {
         <Button leftIcon={<AddIcon />} onClick={addPart}>
           Add
         </Button>
-        <Button rightIcon={<CheckIcon />}>
+        <Button rightIcon={<CheckIcon />} onClick={onSubmit}>
           Submit
         </Button>
       </HStack>

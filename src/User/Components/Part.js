@@ -22,11 +22,6 @@ function Part({ problemID, part, completed }) {
   const [answer, setAnswer] = useState("");
   const [incorrect, setIncorrect] = useState(false);
 
-  //   useEffect(() => {
-  //       setAnswer(part.completed);
-  //       setIncorrect(false)
-
-  //   }, [part])
 
   const [submitAnswer] = useMutation(SUBMIT_ANSWER, {
     update(proxy, result) {
