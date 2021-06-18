@@ -1,37 +1,58 @@
 import { useQuery } from "@apollo/client";
-import { Container, CircularProgress, VStack, Heading, useColorModeValue, Input } from "@chakra-ui/react";
+import {
+  Container,
+  CircularProgress,
+  VStack,
+  Heading,
+  useColorModeValue,
+  Input,
+} from "@chakra-ui/react";
 import { Markup } from "interweave";
 import React from "react";
 import { FETCH_PROBLEM } from "../../util/graphql";
 
-function Part({part}){
-    const {question, answer} = part;
+function Part({ part }) {
+  let question = "";
+  let answer = "";
+  let body = "";
 
-      const background = useColorModeValue("gray.100", "gray.700");
+  if (part.question) {
+    question = part.question;
+    answer = part.answer;
+  } else body = part.body;
 
+  const background = useColorModeValue("gray.100", "gray.700");
 
-    return (
-      <VStack
-        justifyContent="center"
-        rounded={6}
-        p={12}
-        background={background}
-        spacing={6}
-      >
-        <Markup content={question} />
-        <Input
-          defaultValue={answer}
-          variant="filled"
-          isDisabled
-        />
-      </VStack>
-    );
+  return question ? (
+    <VStack
+      justifyContent="center"
+      rounded={6}
+      p={12}
+      background={background}
+      spacing={6}
+    >
+      <Markup content={question} />
+      <Input defaultValue={answer} variant="filled" isDisabled />
+    </VStack>
+  ) : (
+    <VStack
+      justifyContent="center"
+      rounded={6}
+      p={12}
+      background={background}
+      spacing={6}
+    >
+      <Markup content={body} />
+    </VStack>
+  );
 }
 
 function Problem({ match }) {
   const { problemID } = match.params;
 
-  const { data, loading } = useQuery(FETCH_PROBLEM, { variables: {problemID} });
+  const { data, loading } = useQuery(FETCH_PROBLEM, {
+    variables: { problemID },
+  });
 
   let problem = {};
 

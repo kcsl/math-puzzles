@@ -15,13 +15,13 @@ import { UserAuthContext } from "../../context/UserAuth";
 import { SUBMIT_ANSWER } from "../../util/graphql";
 import { FETCH_COMPLETED_PROBLEM } from "../../util/graphql";
 
-function Part({ problemID, part, completed }) {
+function Part({ problemID, part }) {
   const background = useColorModeValue("gray.100", "gray.700");
   const { user } = useContext(UserAuthContext);
 
   const [answer, setAnswer] = useState("");
   const [incorrect, setIncorrect] = useState(false);
-
+  const [completed, setCompleted] = useState(part.completed)
 
   const [submitAnswer] = useMutation(SUBMIT_ANSWER, {
     update(proxy, result) {
@@ -35,12 +35,18 @@ function Part({ problemID, part, completed }) {
       let write = { ...data.getCompletedProblem };
       write.parts = write.parts.map((p) =>
         p.id === part.id
-          ? {
-              id: part.id,
-              question: part.question,
-              answer: part.answer,
-              completed: true,
-            }
+          ? part.question
+            ? {
+                id: part.id,
+                question: part.question,
+                answer: part.answer,
+                completed: true,
+              }
+            : {
+                id: part.id,
+                body: part.body,
+                completed: true,
+              }
           : p
       );
 
@@ -57,13 +63,17 @@ function Part({ problemID, part, completed }) {
     if (answer === part.answer) {
       submitAnswer();
       setIncorrect(false);
-      completed = true;
+      setCompleted(true);
     } else {
       setIncorrect(true);
     }
   }
 
-  return (
+  if(part.body && !completed){
+    submitAnswer();
+  }
+
+  return part.question ? (
     <VStack
       justifyContent="center"
       rounded={6}
@@ -103,6 +113,16 @@ function Part({ problemID, part, completed }) {
           <AlertTitle mr={2}>Your Answer was correct</AlertTitle>
         </Alert>
       )}
+    </VStack>
+  ) : (
+    <VStack
+      justifyContent="center"
+      rounded={6}
+      p={12}
+      background={background}
+      spacing={6}
+    >
+      <Markup content={part.body} />
     </VStack>
   );
 }

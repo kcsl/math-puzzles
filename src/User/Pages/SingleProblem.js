@@ -40,7 +40,7 @@ function SinglePart({ match }) {
         <VStack spacing={6} align="center">
           <Heading size="2xl">{problem.title}</Heading>
           <Heading size="lg">{problem.topic}</Heading>
-          <Part problemID={problemID} part={problem.parts[index]} completed={problem.parts[index].completed}/>
+          <Part problemID={problemID} part={problem.parts[index]}/>
           <HStack spacing={3} align="center">
             {index !== 0 && (
               <Button

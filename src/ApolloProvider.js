@@ -11,9 +11,15 @@ import { setContext } from "@apollo/client/link/context";
 
 import { onError } from "@apollo/client/link/error";
 
+// TODO uncomment line before publishing
 const httpLink = createHttpLink({
   uri: "https://math-puzzles-server.herokuapp.com/",
 });
+
+// TODO comment line before publishing
+// const httpLink = createHttpLink({
+//   uri: "http://localhost:5000"
+// })
 
 // Log any GraphQL errors or network error that occurred
 const errorLink = onError(({ graphQLErrors, networkError }) => {

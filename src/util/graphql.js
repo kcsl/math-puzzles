@@ -62,8 +62,13 @@ export const FETCH_COMPLETED_PROBLEM = gql`
       parts {
         id
         completed
-        question
-        answer
+        ... on Question {
+          question
+          answer
+        }
+        ... on Slide {
+          body
+        }
       }
     }
   }
@@ -108,13 +113,13 @@ export const DELETE_PROBLEM = gql`
 
 export const ADD_PROBLEM = gql`
   mutation MyMutation(
-    $newProblemInput: ProblemInput = {
-      title: ""
-      parts: { question: "", answer: "" }
-      topic: ""
-    }
+    $parts: [PartInput] = {}
+    $title: String!
+    $topic: String!
   ) {
-    createProblem(newProblemInput: $newProblemInput) {
+    createProblem(
+      newProblemInput: { parts: $parts, title: $title, topic: $topic }
+    ) {
       title
       topic
       sections
@@ -126,17 +131,15 @@ export const ADD_PROBLEM = gql`
 `;
 
 export const FETCH_ADMINS = gql`
-
   {
-    getAdmins{
+    getAdmins {
       first_name
       last_name
       email
       role
     }
   }
-
-`
+`;
 
 export const REGISTER_ADMIN = gql`
   mutation register(
@@ -172,8 +175,13 @@ export const FETCH_PROBLEM = gql`
       title
       topic
       parts {
-        question
-        answer
+        ... on Question {
+          question
+          answer
+        }
+        ... on Slide {
+          body
+        }
         index
       }
     }
@@ -187,11 +195,10 @@ export const UPDATE_PROBLEM = gql`
     $parts: [PartInput]!
     $problemID: ID!
   ) {
-    updateProblem(problemID: $problemID, problem: {
-      title: $title
-      topic: $topic
-      parts: $parts
-    }) {
+    updateProblem(
+      problemID: $problemID
+      problem: { title: $title, topic: $topic, parts: $parts }
+    ) {
       title
       topic
       sections
