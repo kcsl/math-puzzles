@@ -14,6 +14,7 @@ import React, { useContext, useState } from "react";
 import { UserAuthContext } from "../../context/UserAuth";
 import { SUBMIT_ANSWER } from "../../util/graphql";
 import { FETCH_COMPLETED_PROBLEM } from "../../util/graphql";
+import { transform } from "../../util/Interweave";
 
 function Part({ problemID, part }) {
   const background = useColorModeValue("gray.100", "gray.700");
@@ -57,7 +58,7 @@ function Part({ problemID, part }) {
     variables: {
       partID: part.id,
     },
-  });
+  }); 
 
   function onSubmit() {
     if (answer === part.answer) {
@@ -81,7 +82,8 @@ function Part({ problemID, part }) {
       background={background}
       spacing={6}
     >
-      <Markup content={part.question} />
+      <Markup content={part.question} transform={transform}/>
+      
       {user && (
         <Input
           placeholder="Answer"
@@ -122,7 +124,7 @@ function Part({ problemID, part }) {
       background={background}
       spacing={6}
     >
-      <Markup content={part.body} />
+      <Markup content={part.body} transform={transform}/>
     </VStack>
   );
 }

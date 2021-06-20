@@ -7,6 +7,8 @@ import {
   useColorModeValue,
   FormControl,
   FormErrorMessage,
+  Container,
+  CircularProgress,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 
@@ -20,7 +22,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const [loginUser] = useMutation(LOGIN_ADMIN, {
+  const [loginUser, { loading }] = useMutation(LOGIN_ADMIN, {
     update(_, { data: { adminLogin: userData } }) {
       context.login(userData);
       window.location = "/admin";
@@ -35,7 +37,11 @@ function Login(props) {
     },
   });
 
-  return (
+  return loading ? (
+    <Container centerContent maxW="container.xl">
+      <CircularProgress isIndeterminate color="teal" />
+    </Container>
+  ) : (
     <Flex alignItems="center" justifyContent="center">
       <Flex direction="column" background={formBackground} p={12} rounded={6}>
         <Heading mb={6}>Log in</Heading>

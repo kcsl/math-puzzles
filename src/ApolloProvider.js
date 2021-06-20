@@ -10,6 +10,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 
 import { onError } from "@apollo/client/link/error";
+import { ColorModeScript } from "@chakra-ui/react";
 
 // TODO uncomment line before publishing
 const httpLink = createHttpLink({
@@ -54,6 +55,7 @@ const client = new ApolloClient({
 
 export default (
   <ApolloProvider client={client}>
+    <ColorModeScript/>
     <App />
   </ApolloProvider>
 );

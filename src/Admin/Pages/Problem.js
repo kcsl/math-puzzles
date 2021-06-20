@@ -10,6 +10,7 @@ import {
 import { Markup } from "interweave";
 import React from "react";
 import { FETCH_PROBLEM } from "../../util/graphql";
+import { transform } from "../../util/Interweave";
 
 function Part({ part }) {
   let question = "";
@@ -31,7 +32,7 @@ function Part({ part }) {
       background={background}
       spacing={6}
     >
-      <Markup content={question} />
+      <Markup content={question} transform={transform} />
       <Input defaultValue={answer} variant="filled" isDisabled />
     </VStack>
   ) : (
@@ -42,7 +43,7 @@ function Part({ part }) {
       background={background}
       spacing={6}
     >
-      <Markup content={body} />
+      <Markup content={body} transform={transform} />
     </VStack>
   );
 }
