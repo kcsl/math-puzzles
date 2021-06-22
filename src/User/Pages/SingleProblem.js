@@ -26,10 +26,10 @@ function SinglePart({ match }) {
     },
   });
 
-  let problem = {};
+  let problem = {}
 
   if (!loading) {
-    problem = data?.getCompletedProblem;
+    problem = data.getCompletedProblem
   }
 
   return (

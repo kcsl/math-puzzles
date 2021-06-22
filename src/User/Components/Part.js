@@ -10,9 +10,9 @@ import {
   AlertTitle,
 } from "@chakra-ui/react";
 import { Markup } from "interweave";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserAuthContext } from "../../context/UserAuth";
-import { SUBMIT_ANSWER } from "../../util/graphql";
+import { FETCH_COMPLETED_PROBLEMS, SUBMIT_ANSWER } from "../../util/graphql";
 import { FETCH_COMPLETED_PROBLEM } from "../../util/graphql";
 import { transform } from "../../util/Interweave";
 
@@ -22,7 +22,12 @@ function Part({ problemID, part }) {
 
   const [answer, setAnswer] = useState("");
   const [incorrect, setIncorrect] = useState(false);
-  const [completed, setCompleted] = useState(part.completed)
+  const [completed, setCompleted] = useState(part.completed);
+
+  useEffect(() => {
+    setCompleted(part.completed);
+    setAnswer("");
+  }, [part]);
 
   const [submitAnswer] = useMutation(SUBMIT_ANSWER, {
     update(proxy, result) {
@@ -36,29 +41,52 @@ function Part({ problemID, part }) {
       let write = { ...data.getCompletedProblem };
       write.parts = write.parts.map((p) =>
         p.id === part.id
-          ? part.question
-            ? {
-                id: part.id,
-                question: part.question,
-                answer: part.answer,
-                completed: true,
-              }
-            : {
-                id: part.id,
-                body: part.body,
-                completed: true,
-              }
+          ? {
+            ...part,
+            completed : true
+          }
           : p
       );
 
-      proxy.writeQuery({ query: FETCH_COMPLETED_PROBLEM, write });
 
-      console.log(result);
+      proxy.writeQuery({
+        query: FETCH_COMPLETED_PROBLEM,
+        data: {getCompletedProblem: write},
+        variables: {
+          problemID,
+        },
+      });
+
+      const allData = proxy.readQuery({
+        query: FETCH_COMPLETED_PROBLEMS,
+      });
+
+
+      write = {
+        ...allData.getUser,
+        problemsCompleted: allData.getUser.problemsCompleted.map((problem) =>
+          problem.id !== problemID
+            ? problem
+            : {
+                ...problem,
+                parts: problem.parts.map((p) =>
+                  part.id === p.id
+                    ? {
+                        ...p,
+                        completed: true,
+                      }
+                    : p
+                ),
+              }
+        ),
+      };
+      proxy.writeQuery({ query: FETCH_COMPLETED_PROBLEMS, data: {getUser: write} });
+
     },
     variables: {
       partID: part.id,
     },
-  }); 
+  });
 
   function onSubmit() {
     if (answer === part.answer) {
@@ -70,7 +98,7 @@ function Part({ problemID, part }) {
     }
   }
 
-  if(part.body && !completed){
+  if (part.body && !completed) {
     submitAnswer();
   }
 
@@ -82,14 +110,15 @@ function Part({ problemID, part }) {
       background={background}
       spacing={6}
     >
-      <Markup content={part.question} transform={transform}/>
-      
+      <Markup content={part.question} transform={transform} />
+
       {user && (
         <Input
           placeholder="Answer"
           variant="filled"
           onChange={(event) => setAnswer(event.target.value)}
           isDisabled={completed}
+          value={completed ? part.answer : answer}
         />
       )}
       {user && (
@@ -124,7 +153,7 @@ function Part({ problemID, part }) {
       background={background}
       spacing={6}
     >
-      <Markup content={part.body} transform={transform}/>
+      <Markup content={part.body} transform={transform} />
     </VStack>
   );
 }

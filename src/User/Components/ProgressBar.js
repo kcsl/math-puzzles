@@ -13,7 +13,6 @@ const CircleIcon = (props) => (
 );
 
 function ProgressBar({ problemID, parts }) {
-  console.log(parts);
   return (
     <Td>
       {parts.map((part, index) => (
