@@ -16,7 +16,7 @@ export function transform(node, children){
       );
     }
     else if(node.tageName.toLowerCase === "a"){
-      return <Link href={node.getAttribute('href')}>{children}</Link>
+      return <Link href={node.getAttribute('href')} color="teal">{children}</Link>
     }
     else if(node.tagName.toLowerCase() === "p"){
         return <Text>{children}</Text>
