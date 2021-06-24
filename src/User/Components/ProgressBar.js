@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Td, Icon, IconButton } from "@chakra-ui/react";
+import { Td, Icon, IconButton, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
@@ -15,22 +15,26 @@ const CircleIcon = (props) => (
 function ProgressBar({ problemID, parts }) {
   return (
     <Td>
-      {parts.map((part, index) => (
-        <IconButton
-          key={part.id}
-          aria-label={`Part ${index + 1}`}
-          variant="ghost"
-          icon={
-            part.completed ? (
-              <CheckCircleIcon color="green" boxSize={5} />
-            ) : (
-              <CircleIcon color="red.500" boxSize={6} />
-            )
-          }
-          as={ReactRouterLink}
-          to={`/user/problem/${problemID}/${index}`}
-        />
-      ))}
+      <Wrap>
+        {parts.map((part, index) => (
+          <WrapItem>
+            <IconButton
+              key={part.id}
+              aria-label={`Part ${index + 1}`}
+              variant="ghost"
+              icon={
+                part.completed ? (
+                  <CheckCircleIcon color="green" boxSize={5} />
+                ) : (
+                  <CircleIcon color="red.500" boxSize={6} />
+                )
+              }
+              as={ReactRouterLink}
+              to={`/user/problem/${problemID}/${index}`}
+            />
+          </WrapItem>
+        ))}
+      </Wrap>
     </Td>
   );
 }
