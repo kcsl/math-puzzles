@@ -15,6 +15,7 @@ import { transform } from "../../util/Interweave";
 function Part({ part }) {
   let question = "";
   let answer = "";
+  let explanation = part.explanation
   let body = "";
 
   if (part.question) {
@@ -34,6 +35,7 @@ function Part({ part }) {
     >
       <Markup content={question} transform={transform} />
       <Input defaultValue={answer} variant="filled" isDisabled />
+      {explanation && <Markup content={explanation} transform={transform} />}
     </VStack>
   ) : (
     <VStack

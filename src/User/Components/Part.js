@@ -142,6 +142,7 @@ function Part({ problemID, part }) {
         <Alert status="success">
           <AlertIcon />
           <AlertTitle mr={2}>Your Answer was correct</AlertTitle>
+          <Markup content={part.explanation} transform={transform} />
         </Alert>
       )}
     </VStack>

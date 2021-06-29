@@ -65,6 +65,7 @@ export const FETCH_COMPLETED_PROBLEM = gql`
         ... on Question {
           question
           answer
+          explanation
         }
         ... on Slide {
           body
@@ -178,6 +179,7 @@ export const FETCH_PROBLEM = gql`
         ... on Question {
           question
           answer
+          explanation
         }
         ... on Slide {
           body

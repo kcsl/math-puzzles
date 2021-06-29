@@ -13,9 +13,9 @@ import ReactQuill from "react-quill";
 import { ADD_PROBLEM } from "../../util/graphql";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@chakra-ui/button";
-import { AddIcon, CheckIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckIcon, MinusIcon} from "@chakra-ui/icons";
 import { formats, modules } from "../../util/quill";
-import { Select } from "@chakra-ui/react";
+import { Select, Switch } from "@chakra-ui/react";
 
 function Add() {
   const [title, setTitle] = useState("");
@@ -46,6 +46,12 @@ function Add() {
     setParts(copy);
   }
 
+  function onChangeExplanation(value, index) {
+    let copy = [...parts];
+    copy[index].explanation = value;
+    setParts(copy);
+  }
+
   function onChangeAnswer(value, index) {
     let copy = [...parts];
     copy[index].answer = value;
@@ -55,6 +61,22 @@ function Add() {
   function onChangeBody(value, index) {
     let copy = [...parts];
     copy[index].body = value;
+    setParts(copy);
+  }
+
+  function addExplanation(index) {
+    let copy = [...parts];
+    copy[index].explanation = "";
+    setParts(copy);
+  }
+
+  function removeExplanation(index) {
+    let copy = [...parts];
+    copy[index] = {
+      question: copy[index].question,
+      answer: copy[index].answer,
+    };
+
     setParts(copy);
   }
 
@@ -85,7 +107,7 @@ function Add() {
 
     copy = [...partTypes];
     copy[index] = value;
-    setPartTypes(copy)
+    setPartTypes(copy);
   }
 
   return (
@@ -115,7 +137,7 @@ function Add() {
             }`}</Heading>
           </Center>
           <Select
-            mb={2}
+            mb={4}
             onChange={(event) => changePartType(event.target.value, index)}
           >
             <option value="Question">Question</option>
@@ -124,7 +146,9 @@ function Add() {
 
           {partTypes[index] === "Question" ? (
             <div>
-              <Text mb={2}>Question</Text>
+              <Text mb={2} size="lg">
+                Question
+              </Text>
               <ReactQuill
                 theme="snow"
                 value={parts[index].question}
@@ -132,7 +156,7 @@ function Add() {
                 modules={modules}
                 formats={formats}
               />
-              <Text mb={2} mt={6}>
+              <Text mb={2} mt={6} size="lg">
                 Answer
               </Text>
               <Input
@@ -140,6 +164,39 @@ function Add() {
                 placeholder="Answer"
                 onChange={(event) => onChangeAnswer(event.target.value, index)}
               />
+              {parts[index].explanation != null ? (
+                <div>
+                  <Text mb={4} mt={6} size="lg">
+                    Explanation
+                  </Text>
+                  <ReactQuill
+                    theme="snow"
+                    value={parts[index].explanation}
+                    onChange={(value) => onChangeExplanation(value, index)}
+                    modules={modules}
+                    formats={formats}
+                  />
+                  <Button
+                    leftIcon={<MinusIcon />}
+                    onClick={() => removeExplanation(index)}
+                    mt={6}
+                    mb={6}
+                  >
+                    Remove Explanation
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    leftIcon={<AddIcon />}
+                    onClick={() => addExplanation(index)}
+                    mt={6}
+                    mb={6}
+                  >
+                    Add Explanation
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <div>
