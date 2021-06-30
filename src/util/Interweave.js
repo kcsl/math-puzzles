@@ -16,7 +16,7 @@ export function transform(node, children){
       );
     }
     else if(node.tagName.toLowerCase() === "a"){
-      const regex = RegExp("(jpg|gif|png)$");
+      const regex = RegExp("(jpg|gif|png)");
 
       if(regex.test(node.getAttribute("href"))){
         return (
