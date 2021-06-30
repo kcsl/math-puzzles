@@ -15,7 +15,7 @@ import "react-quill/dist/quill.snow.css";
 import { Button } from "@chakra-ui/button";
 import { AddIcon, CheckIcon, MinusIcon} from "@chakra-ui/icons";
 import { formats, modules } from "../../util/quill";
-import { Select, Switch } from "@chakra-ui/react";
+import { Select } from "@chakra-ui/react";
 
 function Add() {
   const [title, setTitle] = useState("");
