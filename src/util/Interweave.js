@@ -1,4 +1,4 @@
-import { AspectRatio, Center, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Center, Heading, Image, Link, Text } from "@chakra-ui/react";
 
 export function transform(node, children){
     if(node.tagName.toLowerCase() === "h1"){       
